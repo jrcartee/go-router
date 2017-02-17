@@ -25,6 +25,18 @@ func TestRegisterRoute(t *testing.T) {
 		t.Error("Unexpected route error")
 	}
 }
+func TestRegisterEndpoint(t *testing.T) {
+	r := New()
+
+	r.RegisterEndpoint(http.MethodGet, "one/two/three", DummyHandler)
+	r.RegisterEndpoint(http.MethodPost, "one/two/three", DummyHandler)
+
+	req := httptest.NewRequest(http.MethodGet, "/one/two/three", nil)
+	_, err := r.GetEndpoint(req)
+	if err != nil {
+		t.Error("Unexpected route error")
+	}
+}
 
 func TestPrint(t *testing.T) {
 	r := New()

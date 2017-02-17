@@ -31,6 +31,19 @@ func (self *Router) RegisterRoute(p string, e Endpoints) {
 	current.InsertEndpoints(e)
 }
 
+func (self *Router) RegisterEndpoint(method string, path string, h http.Handler) {
+	p_arr := strings.Split(path, "/")
+	p_arr = removeEmpty(p_arr)
+
+	current := self.root
+	for _, v := range p_arr {
+		current = current.GetOrCreate(v)
+	}
+	current.InsertEndpoints(Endpoints{
+		method: h,
+	})
+}
+
 func (self *Router) Print() {
 	fmt.Println("Routing Tree:")
 	printTree(self.root, "")
