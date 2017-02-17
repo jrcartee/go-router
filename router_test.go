@@ -11,13 +11,11 @@ var DummyHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request)
 	w.WriteHeader(http.StatusOK)
 })
 
-func TestRegisterRoute(t *testing.T) {
+func TestRegister(t *testing.T) {
 	r := New()
 
-	r.RegisterRoute("one/two/three", Endpoints{
-		http.MethodGet:  DummyHandler,
-		http.MethodPost: DummyHandler,
-	})
+	r.Register(http.MethodGet, "one/two/three", DummyHandler)
+	r.Register(http.MethodPost, "one/two/three", DummyHandler)
 
 	req := httptest.NewRequest(http.MethodGet, "/one/two/three", nil)
 	_, err := r.GetEndpoint(req)
@@ -25,11 +23,14 @@ func TestRegisterRoute(t *testing.T) {
 		t.Error("Unexpected route error")
 	}
 }
-func TestRegisterEndpoint(t *testing.T) {
+
+func TestRegisterRoute(t *testing.T) {
 	r := New()
 
-	r.RegisterEndpoint(http.MethodGet, "one/two/three", DummyHandler)
-	r.RegisterEndpoint(http.MethodPost, "one/two/three", DummyHandler)
+	r.RegisterRoute("one/two/three", Endpoints{
+		http.MethodGet:  DummyHandler,
+		http.MethodPost: DummyHandler,
+	})
 
 	req := httptest.NewRequest(http.MethodGet, "/one/two/three", nil)
 	_, err := r.GetEndpoint(req)

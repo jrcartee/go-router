@@ -31,7 +31,7 @@ func (self *Router) RegisterRoute(p string, e Endpoints) {
 	current.InsertEndpoints(e)
 }
 
-func (self *Router) RegisterEndpoint(method string, path string, h http.Handler) {
+func (self *Router) Register(method string, path string, h http.Handler) {
 	p_arr := strings.Split(path, "/")
 	p_arr = removeEmpty(p_arr)
 
@@ -119,5 +119,3 @@ func printTree(node *RouteNode, indent string) {
 		printTree(n, indent)
 	}
 }
-
-// ├ ─ └ │
